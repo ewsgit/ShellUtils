@@ -104,6 +104,9 @@ if (args[ 0 ]) {
 				callError("No directory provided")
 			}
 			break;
+		case "test":
+			callInfo("OK")
+			break;
 		default:
 			callError("Invalid command")
 	}
