@@ -8,9 +8,8 @@
   "type": "module",
   "dependencies": {
     "colors": "^1.4.0",
-    "fs": "^0.0.1-security",
-    "tslib": "^2.3.1",
-    "typescript": "^4.4.4"
+    "fetch": "^1.1.0",
+    "node-fetch": "^3.0.0"
   },
   "bin": {
     "shell-utils": "./cli.js",

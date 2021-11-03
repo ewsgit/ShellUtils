@@ -8,6 +8,9 @@ crd [name] - create a new directory
 rm [name] - remove a file
 rmd [name] - remove a directory
 ls - list files and directories
+lsd - list directories
+lsf - list files
+
 info - project info
 ```
 ---

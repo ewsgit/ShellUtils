@@ -2,15 +2,12 @@
 
 import fs from 'fs';
 import 'colors';
+import fetch from 'node-fetch';
 
 var args = process.argv.slice(2);
 
 if (args[ 0 ]) {
 	switch (args[ 0 ].toLowerCase()) {
-		case "infomation":
-		case "info":
-			console.log("----- Shell Utils -----\n" + "    Made By @Ewsgit   \n" + "-----------------------")
-			break;
 		case "cr":
 		case "create":
 			if (args[ 1 ]) {
@@ -107,6 +104,54 @@ if (args[ 0 ]) {
 		case "test":
 			callInfo("OK")
 			break;
+		case "list":
+		case "ls":
+			if (args[ 1 ]) {
+				logDirectory(args[ 1 ])
+			} else {
+				logDirectory()
+			}
+			break;
+		case "listfiles":
+		case "lsf":
+			if (args[ 1 ]) {
+				logDirectoryFiles(args[ 1 ])
+			} else {
+				logDirectoryFiles()
+			}
+			break;
+		case "listdirs":
+		case "lsd":
+			if (args[ 1 ]) {
+				logDirectoryDirs(args[ 1 ])
+			} else {
+				logDirectoryDirs()
+			}
+			break;
+		case "infomation":
+		case "info":
+		case "version":
+		case "vers":
+			fs.readFile(process.argv[ 1 ].replace("cli.js", "version.txt"), (err, data) => {
+				if (err) {
+					callError("An Error Occured")
+				} else {
+					callInfo(`Current version: v${data}`)
+					fetch("https://api.github.com/repos/ewsgit/ShellUtils/releases/latest")
+					.then(response => response.json())
+					.then(data => {
+						if (data.message !== "Not Found") {
+							callInfo("Latest release: v" + data.tag_name)
+							if (data.body !== "") {
+								callInfo("Release notes: " + data.body)
+							}
+							callInfo("Download link: " + data.zipball_url)
+						}
+						callInfo("Made By @Ewsgit")
+					})
+				}
+			})
+			break;
 		default:
 			callError("Invalid command")
 	}
@@ -129,4 +174,99 @@ function callWarning(message) {
 
 function callInfo(message) {
 	console.log(" INFO ".blue.bgBlack + " " + message)
+}
+
+function logDirectory(dir) {
+	if (dir) {
+		if (fs.existsSync(dir)) {
+			fs.readdir(dir, (err, files) => {
+				if (err) {
+					callError("An Error Occured")
+				} else {
+					files.forEach(file => {
+						console.log(file)
+					})
+				}
+			})
+		} else {
+			callError("Directory does not exist")
+		}
+	} else {
+		fs.readdir("./", (err, files) => {
+			if (err) {
+				callError("An Error Occured")
+			} else {
+				callSuccess("Files in directory:")
+				files.forEach(file => {
+					console.log(file)
+				})
+			}
+		})
+	}
+}
+
+function logDirectoryDirs(dir) {
+	if (dir) {
+		if (fs.existsSync(dir)) {
+			fs.readdir(dir, (err, files) => {
+				if (err) {
+					callError("An Error Occured")
+				} else {
+					files.forEach(file => {
+						if (fs.lstatSync(file).isDirectory()) {
+							console.log(file)
+						}
+					})
+				}
+			})
+		} else {
+			callError("Directory does not exist")
+		}
+	} else {
+		fs.readdir("./", (err, files) => {
+			if (err) {
+				callError("An Error Occured")
+			} else {
+				callSuccess("Directories in directory:")
+				files.forEach(file => {
+					if (fs.lstatSync(file).isDirectory()) {
+						console.log(file)
+					}
+				})
+			}
+		})
+	}
+}
+
+function logDirectoryFiles(dir) {
+	if (dir) {
+		if (fs.existsSync(dir)) {
+			fs.readdir(dir, (err, files) => {
+				if (err) {
+					callError("An Error Occured")
+				} else {
+					files.forEach(file => {
+						if (fs.lstatSync(file).isFile()) {
+							console.log(file)
+						}
+					})
+				}
+			})
+		} else {
+			callError("Directory does not exist")
+		}
+	} else {
+		fs.readdir("./", (err, files) => {
+			if (err) {
+				callError("An Error Occured")
+			} else {
+				callSuccess("Files in directory:")
+				files.forEach(file => {
+					if (fs.lstatSync(file).isFile()) {
+						console.log(file)
+					}
+				})
+			}
+		})
+	}
 }
