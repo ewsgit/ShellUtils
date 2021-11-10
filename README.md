@@ -10,8 +10,9 @@ rmd [name] - remove a directory
 ls - list files and directories
 lsd - list directories
 lsf - list files
-
 info - project info
+
+Run "s help" for a list of all current commands (this is not often updated)
 ```
 ---
 ## Installation Instructions
