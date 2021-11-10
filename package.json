@@ -7,6 +7,7 @@
   "private": false,
   "type": "module",
   "dependencies": {
+    "@types/node": "^16.11.7",
     "colors": "^1.4.0",
     "fetch": "^1.1.0",
     "node-fetch": "^3.0.0"

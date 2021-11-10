@@ -9,29 +9,41 @@ var args = process.argv.slice(2);
 
 if (args[ 0 ]) {
 	switch (args[ 0 ].toLowerCase()) {
+		case "utils":
+		case "utilities":
+			if (args[ 1 ]) {
+				switch (args[ 1 ].toLowerCase()) {
+					case "help":
+					default:
+						console.log(`----- ${`Help`.yellow} -----`)
+						console.log(`list - list all utilities\nfolder - open the utility script folder\nenable - enable a utility script in the folder`)
+						console.log(`----------------`)
+					}
+				} else {
+					callError(`Do "s utils help" for a list of commands.`)
+				}
+			break;
 		case "open":
 		case "op":
 			if (args[ 1 ]) {
 				if (fs.existsSync(args[ 1 ])) {
-					if (fs.isDirectory(args[ 1 ])) {
+					if (fs.lstatSync(args[ 1 ]).isDirectory()) {
 						console.log("Opening folder:".green, args[ 1 ]);
 						// run code [Filename / dirname] command
-						childProcess.exec(`code ${args[ 1 ]}`, (err, stdout, stderr) => {
+						childProcess.exec(`code ${args[ 1 ]}`, (err) => {
 							if (err) {
 								callError(err);
 								return;
 							}
-							callInfo(stdout);
 						});
 					} else {
 						console.log("Opening file:".green, args[ 1 ]);
 						// run code [Filename / dirname] command
-						childProcess.exec(`code ${args[ 1 ]}`, (err, stdout, stderr) => {
+						childProcess.exec(`code ${args[ 1 ]}`, (err) => {
 							if (err) {
 								callError(err);
 								return;
 							}
-							callInfo(stdout);
 						}
 						);
 					}
@@ -81,16 +93,17 @@ if (args[ 0 ]) {
 			break;
 		case "help":
 		case "h":
-			console.log("--------------- " + "Shell Utils".yellow + " ---------------\n" + "help - this menu\nh - help "
-				+ "(alias)".yellow +
-				"\ncreate " + "[fileName]".green + " - create a file\ncr - create " +
-				"(alias)".yellow +
-				"\nremove " + "[fileName]".green + " - remove a file\nrm - remove " +
-				"(alias)".yellow +
-				"\nclear - clear the screen\ncls - clear " +
-				"(alias)".yellow +
-				"\ncl - clear " +
-				"(alias)".yellow +
+			console.log("--------------- " + "Shell Utils".yellow + " ---------------" +
+				"\nhelp - this menu" +
+				"\nh - help " + "(alias)".yellow +
+				"\ncreate " + "[fileName / path]".green + " - create a file\ncr - create " + "(alias)".yellow +
+				"\nremove " + "[fileName / path]".green + " - remove a file\nrm - remove " + "(alias)".yellow +
+				"\nclear - clear the screen\ncls - clear " + "(alias)".yellow +
+				"\ncl - clear " + "(alias)".yellow +
+				"\nopen - open a file in your editor of choice " + "[fileName / path]".green +
+				"\nop - open " + "(alias)".yellow +
+				"\nclear - clear the terminal " +
+				"\ncls - clear " + "(alias)".yellow +
 				"\n" + "------------------------------------------- ")
 			break;
 		case "clear":
