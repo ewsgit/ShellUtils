@@ -3,11 +3,45 @@
 import fs from 'fs';
 import 'colors';
 import fetch from 'node-fetch';
+import childProcess from 'child_process';
 
 var args = process.argv.slice(2);
 
 if (args[ 0 ]) {
 	switch (args[ 0 ].toLowerCase()) {
+		case "open":
+		case "op":
+			if (args[ 1 ]) {
+				if (fs.existsSync(args[ 1 ])) {
+					if (fs.isDirectory(args[ 1 ])) {
+						console.log("Opening folder:".green, args[ 1 ]);
+						// run code [Filename / dirname] command
+						childProcess.exec(`code ${args[ 1 ]}`, (err, stdout, stderr) => {
+							if (err) {
+								callError(err);
+								return;
+							}
+							callInfo(stdout);
+						});
+					} else {
+						console.log("Opening file:".green, args[ 1 ]);
+						// run code [Filename / dirname] command
+						childProcess.exec(`code ${args[ 1 ]}`, (err, stdout, stderr) => {
+							if (err) {
+								callError(err);
+								return;
+							}
+							callInfo(stdout);
+						}
+						);
+					}
+				} else {
+					callError("File / Folder does not exist.");
+				}
+			} else {
+				callError("Please specify a file or folder to open.");
+			}
+			break;
 		case "cr":
 		case "create":
 			if (args[ 1 ]) {
@@ -99,6 +133,49 @@ if (args[ 0 ]) {
 				}
 			} else {
 				callError("No directory provided")
+			}
+			break;
+		case "createdirs":
+		case "crds":
+			var dirs = args.slice(1)
+			if (dirs.length > 0) {
+				dirs.forEach(dir => {
+					if (!fs.existsSync(dir)) {
+						fs.mkdir(dir, (err) => {
+							if (err) {
+								callError("An Error Occured")
+							} else {
+								callSuccess("Directory created successfully")
+							}
+						})
+					} else {
+						callError("Directory already exists")
+					}
+				})
+			} else {
+				callError("No directories provided")
+			}
+			break;
+		case "removedirs":
+		case "rmds":
+			var dirs = args.slice(1)
+			if (dirs.length > 0) {
+				dirs.forEach(dir => {
+					if (fs.existsSync(dir)) {
+						fs.rmdir(dir, (err) => {
+							if (err) {
+								callError("An Error Occured")
+							} else {
+								callSuccess("Directory deleted successfully")
+							}
+						}
+						)
+					} else {
+						callError("Directory does not exist")
+					}
+				})
+			} else {
+				callError("No directories provided")
 			}
 			break;
 		case "test":
