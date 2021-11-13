@@ -1,0 +1,6 @@
+# input all nodejs packages to be installed at runtime no separate lines with # at the start of the line for comments
+#
+# example:
+# 
+# express
+# @types/express
