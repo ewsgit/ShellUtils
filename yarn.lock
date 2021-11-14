@@ -282,6 +282,11 @@
     "interpret" "^1.0.0"
     "rechoir" "^0.6.2"
 
+"vm@^0.1.0":
+  "integrity" "sha1-AGDUhei4mFiUbECwGmugeUXbcKg="
+  "resolved" "https://registry.npmjs.org/vm/-/vm-0.1.0.tgz"
+  "version" "0.1.0"
+
 "web-streams-polyfill@^3.0.3":
   "integrity" "sha512-EqPmREeOzttaLRm5HS7io98goBgZ7IVz79aDvqjD0kYXLtFZTc0T/U6wHTPKyIjb+MdN7DFIIX6hgdBEpWmfPA=="
   "resolved" "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.0.tgz"
