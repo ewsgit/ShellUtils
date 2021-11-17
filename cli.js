@@ -6,10 +6,97 @@ import fetch from "node-fetch";
 import childProcess from "child_process";
 import { callError, callInfo, callSuccess, callWarning } from "./libs.js";
 
+import os from "os";
 var args = process.argv.slice(2);
 
 if (args[0]) {
   switch (args[0].toLowerCase()) {
+    case "dotfile":
+      if (os.platform() === "win32") {
+        if (args[1]) {
+          switch (args[1].toLowerCase()) {
+            case "generate":
+              callInfo("Starting to scan for dotfiles / config files!");
+              // generate a config file
+              var data = {
+                node_modules: [],
+                files: [],
+              };
+              var dotfileArray = [
+                {
+                  name: ".gitconfig",
+                  location: "~/.gitconfig",
+                },
+                {
+                  name: "Microsoft.PowerShell_profile.ps1",
+                  location: "~/Documents/Powershell/Microsoft.PowerShell_profile.ps1",
+                },
+                {
+                  name: "theme.omp.json",
+                  location: "~/theme.omp.json",
+                },
+              ];
+              for (let i = 0; i < dotfileArray.length; i++) {
+                dotfileArray[i].hostLocation = dotfileArray[i].location.replace(/~/, os.homedir());
+                if (fs.existsSync(dotfileArray[i].hostLocation)) {
+                  data.files.push({
+                    name: dotfileArray[i].name,
+                    location: dotfileArray[i].location,
+                    data: fs.readFileSync(dotfileArray[i].hostLocation, "utf8").toString(),
+                  });
+                  callInfo(`Found ${dotfileArray[i].name}`);
+                }
+              }
+              callInfo("Scanning for global node_modules...");
+              if (fs.existsSync("~/AppData/Roaming/npm/node_modules".replace(/~/, os.homedir()))) {
+                fs.readdir("~/AppData/Roaming/npm/node_modules".replace(/~/, os.homedir()), (err, files) => {
+                  for (let i = 0; i < files.length; i++) {
+                    data.node_modules.push("~/AppData/Roaming/npm/node_modules" + files[i]);
+                  }
+                });
+              }
+              fs.writeFile("dotfileconf.json", JSON.stringify(data, null, 2), err => {
+                if (err) {
+                  callError("An Error Occured");
+                } else {
+                  callSuccess("Config file generated");
+                }
+              });
+              break;
+            case "load":
+              // load a config file
+              fs.readFile("dotfileconf.json", (err, data) => {
+                if (err) {
+                  callError("An Error Occured");
+                } else {
+                  callSuccess("Config file loaded");
+                }
+              });
+              break;
+            default:
+              callError("Invalid dotfile command");
+          }
+          break;
+        } else {
+          callError("Invalid dotfile command");
+        }
+      } else {
+        callInfo("This command is currently only available on Windows");
+      }
+      break;
+    case "ex":
+    case "exp":
+    case "explorer":
+      if (os.platform() !== "win32") {
+        callInfo("Explorer is only currently supported on windows");
+      } else {
+        if (args[1]) {
+          childProcess.exec(`start ${args[1]}`);
+        } else {
+          childProcess.exec(`start .`);
+        }
+      }
+      break;
     case "open":
     case "op":
       if (args[1]) {
