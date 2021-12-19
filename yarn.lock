@@ -231,6 +231,11 @@
     "fetch-blob" "^3.1.2"
     "formdata-polyfill" "^4.0.10"
 
+"nodeparity@^1.0.5":
+  "integrity" "sha512-5ZitGme8s5Eg/QVwixV7rDWmMiiM4CQ5ksaCWDNmyUrL2LVToQDcbezS59FjDNMYMN4Ew4AEgHHci2lKs/zETA=="
+  "resolved" "https://registry.npmjs.org/nodeparity/-/nodeparity-1.0.5.tgz"
+  "version" "1.0.5"
+
 "once@^1.3.0":
   "integrity" "sha1-WDsap3WWHUsROsF9nFC6753Xa9E="
   "resolved" "https://registry.npmjs.org/once/-/once-1.4.0.tgz"
