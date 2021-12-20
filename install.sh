@@ -4,6 +4,8 @@ echo "Installing ShellUtils..."
 mkdir ~/.ShellUtils/
 cp ./* ~/.ShellUtils/
 cd ~/.ShellUtils/
+rm settings.json
+rm dotfileconf.json
 npm install
 npm install -g
 echo "Installing Github CLI..."
