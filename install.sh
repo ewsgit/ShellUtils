@@ -1,5 +1,4 @@
-echo "This script requires sudo privileges. Please enter your password to continue."
-su
+echo "This script requires sudo privileges. Please enter your password when required to continue."
 echo "Installing ShellUtils..."
 mkdir ~/.ShellUtils/
 cp ./* ~/.ShellUtils/

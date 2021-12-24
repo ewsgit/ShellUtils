@@ -57,7 +57,7 @@ function main(settings) {
                   callError("please enter a name for the project");
                   process.exit();
                 }
-                if (fs.existsSync(args[2])) {
+                if (fs.existsSync(args[2]) && fs.lstatSync(args[2]).isDirectory()) {
                   settings.projects.push({
                     name: args[3].toLowerCase(),
                     path: fs.realpathSync(args[2]),
@@ -70,14 +70,6 @@ function main(settings) {
               } else {
                 callError("please enter a path for the project");
                 process.exit();
-              }
-              break;
-            case "remove":
-              if (args[2]) {
-                settings.projects.splice(
-                  settings.projects.findIndex(x => x.name === args[2]),
-                  1
-                );
               }
               break;
             case "create":
@@ -98,9 +90,28 @@ function main(settings) {
                 process.exit();
               }
               break;
+            case "remove":
+            case "delete":
+              if (args[2]) {
+                if (settings.projects.findIndex(x => x.name === args[2]) !== -1) {
+                  var ind = settings.projects.findIndex(x => x.name === args[2]);
+                  if (fs.existsSync(ind.path)) {
+                    fs.rmdirSync(ind.path);
+                    callSuccess("Project " + args[2] + " deleted");
+                  } else {
+                    callError("Project " + args[2] + " does not exist");
+                  }
+                } else {
+                  callError("Project " + args[2] + " does not exist");
+                }
+              } else {
+                callError("please enter a name for the project to delete");
+                process.exit();
+              }
+              break;
             case "list":
               settings.projects.forEach(project => {
-                console.log(project.name);
+                callInfo(project.name);
               });
               break;
             default:
@@ -425,6 +436,20 @@ function main(settings) {
           logDirectoryDirs();
         }
         break;
+      case "helloworldsh":
+        childProcess.exec(`${$home}/.ShellUtils/helloWorld.sh`, (err, stdout, stderr) => {
+          if (err) {
+            callError(err);
+            return;
+          } else {
+            if (stdout) {
+              console.log(stdout);
+            } else if (stderr) {
+              callError(stderr);
+            }
+          }
+        });
+        break;
       case "infomation":
       case "info":
       case "version":
@@ -441,7 +466,7 @@ function main(settings) {
                   if (data.tag_name === verdata.toString()) {
                     return callInfo("You are using the latest version");
                   }
-                  callInfo("Latest release: v" + data.tag_name);
+                  callInfo("New version available: v" + data.tag_name + ' use "s update" to update');
                   if (data.body !== "") {
                     callInfo("Release notes: " + data.body);
                   }
