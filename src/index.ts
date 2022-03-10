@@ -4,6 +4,8 @@ import inquirer from "inquirer"
 import express from "express"
 import fs from "fs"
 
+const CONSTANTS = {}
+
 var USERDATA = {}
 var __RAW_USERDATA__ = ""
 
@@ -30,22 +32,24 @@ var COMMAND = {
 
 // generate command options
 process.argv.splice(1, 2).map((arg, ind) => {
-  if arg.beginsWith("--") {
+  if (arg.startsWith("--")) {
     COMMAND.options[arg] = process.argv[ind++]
   }
 })
 
 function main() {
-
+  switch(COMMAND.name.toLowerCase()) {
+    default:
+      console.log(chalk.bgHex("#333").red(" Error ") + `No command called "${COMMAND.name}" was found. Run "s help" for a list of valid commands`)
+  }
 }
 
 main()
 
 function startWebServer() {
-  var app = new express()
+  var app = express()
   
-  // insert app routes
-  
+  // insert app routes 
   app.get("/ui", (req, res) => {
     res.sendFile("./react/dist/index.html")
   })
