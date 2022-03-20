@@ -1,4 +1,12 @@
 #!/bin/env node
+
+/*
+ * ////////////////////////////////////////
+ * //      ShellUtils © 2022 Ewsgit      //
+ * //   Licensed under the MIT License   //
+ * ////////////////////////////////////////
+ */
+
 import chalk from "chalk"
 import {exec} from "child_process"
 import inquirer from "inquirer"
@@ -6,15 +14,16 @@ import path from "path"
 import os from "os"
 import express from "express"
 import fs from "fs"
+import open from "open"
 
 const CONSTANTS = {
   homedir: os.homedir()
 }
 
-var USERDATA = {}
-var __RAW_USERDATA__ = ""
+let USERDATA = {}
+let __RAW_USERDATA__ = ""
 
-// read the ShellUtils.config.json file at ~ or /home/[current user]/ (on gnu / linux) 
+// read the ShellUtils.config.json file at ~ or /home/[current user]/ (on gnu/linux)
 
 if (fs.existsSync(path.join(CONSTANTS.homedir ,".ShellUtils.config.json"))) {
   // read the file, parse and set the USERDATA variable to the result
@@ -29,7 +38,7 @@ if (fs.existsSync(path.join(CONSTANTS.homedir ,".ShellUtils.config.json"))) {
 
 }
 
-var COMMAND = {
+let COMMAND = {
   name: process.argv[2],
   args: {},
   options: {}

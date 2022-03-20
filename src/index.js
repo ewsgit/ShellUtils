@@ -7,9 +7,9 @@ import fs from "fs";
 const CONSTANTS = {
     homedir: os.homedir()
 };
-var USERDATA = {};
-var __RAW_USERDATA__ = "";
-// read the ShellUtils.config.json file at ~ or /home/[current user]/ (on gnu / linux) 
+let USERDATA = {};
+let __RAW_USERDATA__ = "";
+// read the ShellUtils.config.json file at ~ or /home/[current user]/ (on gnu/linux)
 if (fs.existsSync(path.join(CONSTANTS.homedir, ".ShellUtils.config.json"))) {
     // read the file, parse and set the USERDATA variable to the result
     USERDATA = JSON.parse(fs.readFileSync(path.join(CONSTANTS.homedir, ".ShellUtils.config.json")).toString());
@@ -20,7 +20,7 @@ else {
     USERDATA = {};
     __RAW_USERDATA__ = "{}";
 }
-var COMMAND = {
+let COMMAND = {
     name: process.argv[2],
     args: {},
     options: {}

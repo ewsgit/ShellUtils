@@ -22,6 +22,7 @@
     "inquirer": "^8.2.0",
     "node-fetch": "^3.0.0",
     "nodeparity": "^1.0.5",
+    "open": "^8.4.0",
     "shelljs": "^0.8.4",
     "typescript": "^4.6.2",
     "vm": "^0.1.0"
