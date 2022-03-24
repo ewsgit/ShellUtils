@@ -7,13 +7,6 @@
  * ////////////////////////////////////////
  */
 
-/*
- * ////////////////////////////////////////
- * //      ShellUtils © 2022 Ewsgit      //
- * //   Licensed under the MIT License   //
- * ////////////////////////////////////////
- */
-
 import chalk from "chalk"
 import { exec } from "child_process"
 import inquirer from "inquirer"
@@ -27,7 +20,7 @@ const CONSTANTS = {
   homedir: os.homedir()
 }
 
-let WEB_SERVER;
+let WEB_SERVER = null;
 
 let USERDATA = {}
 let __RAW_USERDATA__ = ""
@@ -54,6 +47,33 @@ let COMMAND: {
   args: {},
   options: {}
 }
+
+const COMMANDS = [
+  {
+    name: "Help",
+    description: "Display this command help menu.",
+    aliases: [ "h", "info" ]
+  },
+  {
+    name: "mono",
+    description: "manage, create and open DevDash compatable mono repos",
+    aliases: [ "mono", "monorepo" ]
+  },
+  {
+    name: "github",
+    description: "manage, create and open Github repositories",
+    aliases: [ "gh" ]
+  },
+  {
+    name: "config",
+    description: "manage ShellUtils Settings",
+    aliases: [ "settings", "configure" ]
+  },
+  {
+    name: "dotfiles",
+    description: "manage and save your dotfiles across operating systems"
+  }
+]
 
 // generate command options
 process.argv.splice( 1, 2 ).map( ( arg, ind ) => {
@@ -87,9 +107,10 @@ function main() {
   } else {
     if ( COMMAND.name ) {
       switch ( COMMAND.name.toLowerCase() ) {
-        case "proj":
-          console.log( "Hello" )
-          break;
+        case "git":
+        case "monorepo":
+          console.log("MonoRepos not yet supported.")
+        break;
         default:
           console.log( chalk.bgHex( "#333" ).hex( "#f77" ).bold( " Error " ) + ` No command called "${ COMMAND.name }" was found. Run "s help" for a list of valid commands.` )
       }
